@@ -1,6 +1,6 @@
 # 全栈第一步
 
-> vue(全家桶)+node(express)+mongodb(mongoose)+阿里云(cenOS)部署+域名上线，前后端分离博客
+> vue(全家桶)+node(express)+mysql+阿里云(cenOS)部署+域名上线，前后端分离博客
 
 > [http://pengrongjie.com/](http://pengrongjie.com/) （请使用PC打开，并不是一个移动端项目）
 1. 项目介绍
@@ -15,10 +15,9 @@
 
 **另外想换个环境开始新的工作，2年多前端，坐标广州东莞都可以，麻烦兄弟们帮帮忙，推荐一下，十分感谢!** :smile::smile::smile:
 
-> [我的简历](https://github.com/pengrongjie/my-resume)
 # 项目介绍
 ## 技术栈
-vue2 + vue-router + webpack + ES6 + axios + less + flex + cookie + exprss + mongoDB + 阿里云(cenOS)
+vue2 + vue-router + webpack + ES6 + axios + less + flex + cookie + exprss + mysql + 阿里云(cenOS)
 #### 已完成
 1. 前台部分
 - [x] 登录
@@ -44,12 +43,12 @@ vue2 + vue-router + webpack + ES6 + axios + less + flex + cookie + exprss + mong
 ## 分开2个终端运行
 克隆
 ```
-git clone https://github.com/pengrongjie/vue-node-mongodb.git
+git clone https://github.com/zhangrongwu/typroject-client.git
 ```
 #### Vue
 ``` bash
 # 安装依赖
-cd vue-node-mongodb
+cd typroject-client
 cnpm install
 
 # 打开浏览器运行 localhost:8080
@@ -63,7 +62,9 @@ npm run build
 #### Node
 ``` bash
 # 安装依赖
-cd vue-node-mongodb/server
+cd typroject-client/server
+
+
 cnpm install
 
 # 打开浏览器运行 localhost:80
@@ -74,9 +75,9 @@ npm start
 ## 打包后，只需要运行一个终端
 把打包后生成的**dist**文件夹,复制到
 ```
-vue-node-mongodb/server
+typroject-client/server
 ```
-cd vue-node-mongodb/server/app.js 
+cd typroject-client/server/app.js 
 
 找到 `app.use(express.static(path.join(__dirname, 'public')))` 在后面加上，以下代码
 
@@ -90,9 +91,8 @@ npm start
 ## 提醒
 数据库名字更改
 ``` bash
-# cd vue-node-mongodb/server/data/module.js
+# cd typroject-client/server/data/module.js
 
-找到 mongoose.connect('mongodb://localhost:27017/test93');
 把 test93 修改成你自己喜欢的数据库名字
 ```
 ## 项目大概
@@ -128,18 +128,7 @@ winSCP shell
 
 ![](/book/images/bVWsa1.png)
 
-#### shell操作已经部署在阿里云上的mongodb
-1. winSCP,找到**mongodb**的安装目录
 
-![](/book/images/bVWLtj.png)
-
-2. shell操作**mongodb**,与windows相比，只是启动的方式由**mongo**变成 ./mongo
-```
-cd 目录
-./mongo
-```
-![](/book/images/bVWLtE.png)
-![](/book/images/bVWLxa.png)
 #### pm2
 相比 npm start 或者 node app.js,pm2在关闭远程链接，还能永远运行
 ```
