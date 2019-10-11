@@ -42,9 +42,9 @@
 <script>
 import navBread from '../../components/navBread'
 export default {
-  data(){
-    return{
-      category:'',
+  data() {
+    return {
+      category: '',
       count: '',
       pages: '',
       page: '',
@@ -52,11 +52,11 @@ export default {
       skip: ''
     }
   },
-  components:{
+  components: {
     navBread
   },
-  methods:{
-    getData(){
+  methods: {
+    getData() {
       this.$http.get('/admin/category').then((response) => {
         console.log(response.data);
         this.category = response.data.data;
@@ -68,31 +68,31 @@ export default {
         console.log(this.category);
       })
     },
-    del(obj){
-        this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
+    del(obj) {
+      this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$http.post('/admin/category_del', {
+          id: obj
         }).then(() => {
-          this.$http.post('/admin/admin_category_del',{
-            _id: obj
-          }).then(() => {
-            this.$message({
-              type: 'success',
-              message: '删除一个分类成功!'
-            });
-            this.getData();
-          })
-        }).catch(() => {
           this.$message({
-            type: 'info',
-            message: '已取消删除'
+            type: 'success',
+            message: '删除一个分类成功!'
           });
+          this.getData();
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
         });
+      });
     },
-    next(obj){
+    next(obj) {
       this.page++;
-      if(this.page > this.pages){
+      if (this.page > this.pages) {
         this.page = this.pages;
         this.$message({
           message: '已经是最后一页',
@@ -105,9 +105,9 @@ export default {
         this.category = response.data.data;
       })
     },
-    prev(){
+    prev() {
       this.page--;
-      if(this.page < 1){
+      if (this.page < 1) {
         this.page = 1;
         this.$message({
           message: '已经是第一页',
@@ -124,22 +124,22 @@ export default {
       })
     }
   },
-  created(){
+  created() {
     this.getData();
   }
 }
 </script>
 
 <style lang="less" scoped>
-.category{
-  .table-top{
+.category {
+  .table-top {
     height: 80px;
-    h1{
+    h1 {
       float: left;
       margin-left: 20px;
       line-height: 80px;
     }
-    button{
+    button {
       float: left;
       height: 35px;
       line-height: 35px;

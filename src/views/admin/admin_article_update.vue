@@ -51,7 +51,7 @@ export default {
     updateArticle(obj){
       console.log(this.articleCategory);
       var that = this;
-      this.$http.post('/admin/admin_article_update',{
+      this.$http.post('/admin/article_update',{
         articleTitle: this.articleTitle,
         articleCategory: this.articleCategory,
         articleContent: this.articleContent,

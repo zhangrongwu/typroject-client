@@ -14,35 +14,36 @@
 <script>
 import navBread from '../../components/navBread'
 export default {
-  data(){
-    return{
+  data() {
+    return {
       categoryName: ''
     }
   },
-  components:{
+  components: {
     navBread
   },
-  methods:{
-    AddCategory(){
+  methods: {
+    AddCategory() {
       var that = this;
-      this.$http.post('/admin/admin_category_add',{
-        categoryName: this.categoryName
+      this.$http.post('/admin/category_add', {
+        title: this.categoryName,
+        time: new Date()
       }).then((response) => {
         console.log(response.data);
-        if(response.data.code == 1){
+        if (response.data.status == 0) {
           this.$message({
             message: '分类名已经存在，请重新输入新的分类名',
             type: 'error'
           });
         }
-        if(response.data.code == 200){
+        if (response.data.status == 1) {
           this.$message({
             message: '增加成功，1秒后跳转到分类列表',
             type: 'success'
           });
-          setTimeout(function(){
-            that.$router.push({path: '/admin_category'});
-          },1000)
+          setTimeout(function () {
+            that.$router.push({ path: '/admin_category' });
+          }, 1000)
         }
       })
     }
@@ -51,10 +52,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
-h1{
+h1 {
   margin-left: 120px;
 }
-button{
+button {
   margin-left: 120px;
 }
 </style>

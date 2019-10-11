@@ -48,7 +48,7 @@ export default {
   methods:{
     addArticle(){
       var that = this;
-      this.$http.post('/admin/admin_article_add',{
+      this.$http.post('/admin/article_add',{
         articleName: this.articleName,
         articleCategory: this.articleCategory,
         articleContent: this.articleContent

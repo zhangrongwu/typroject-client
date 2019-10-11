@@ -34,7 +34,7 @@
           <td>{{ item.time }}</td>
           <td><router-link :to="{ path: '/admin_article_comment', query: {_id: item._id} }"><button class="commentButton">查看 ({{ item.comment.length }})</button></router-link></td>
           <td><router-link :to="{ path: '/admin_article_update', query: {_id: item._id} }"><button type="button" class="updateButton">修改</button></router-link></td>
-          <td @click="del(item._id)"><button type="button" class="delButton">删除</button></td>
+          <td @click="del(item.id)"><button type="button" class="delButton">删除</button></td>
         </tr>
       </table>
     </div>
@@ -53,9 +53,9 @@
 <script>
 import navBread from '../../components/navBread'
 export default {
-  data(){
-    return{
-      articleData:'',
+  data() {
+    return {
+      articleData: '',
       count: '',
       pages: '',
       page: '',
@@ -63,11 +63,11 @@ export default {
       skip: ''
     }
   },
-  components:{
+  components: {
     navBread
   },
-  methods:{
-    getData(){
+  methods: {
+    getData() {
       this.$http.get('/admin/admin_article').then((response) => {
         console.log(response.data);
         this.articleData = response.data.data;
@@ -78,31 +78,31 @@ export default {
         this.skip = response.data.skip;
       })
     },
-    del(obj){
-        this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
+    del(obj) {
+      this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$http.post('/admin/article_del', {
+          id: obj
         }).then(() => {
-          this.$http.post('/admin/admin_article_del',{
-            _id: obj
-          }).then(() => {
-            this.$message({
-              type: 'success',
-              message: '删除一篇文章成功!'
-            });
-            this.getData();
-          })
-        }).catch(() => {
           this.$message({
-            type: 'info',
-            message: '已取消删除'
+            type: 'success',
+            message: '删除一篇文章成功!'
           });
+          this.getData();
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
         });
+      });
     },
-    next(obj){
+    next(obj) {
       this.page++;
-      if(this.page > this.pages){
+      if (this.page > this.pages) {
         this.page = this.pages;
         this.$message({
           message: '已经是最后一页',
@@ -115,9 +115,9 @@ export default {
         this.articleData = response.data.data;
       })
     },
-    prev(){
+    prev() {
       this.page--;
-      if(this.page < 1){
+      if (this.page < 1) {
         this.page = 1;
         this.$message({
           message: '已经是第一页',
@@ -134,21 +134,21 @@ export default {
       })
     }
   },
-  created(){
+  created() {
     this.getData();
   }
 }
 </script>
 
 <style lang="less" scoped>
-.table-top{
+.table-top {
   height: 80px;
-  h1{
+  h1 {
     float: left;
     margin-left: 20px;
     line-height: 80px;
   }
-  button{
+  button {
     float: left;
     height: 35px;
     line-height: 35px;
