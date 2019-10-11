@@ -15,27 +15,23 @@ Vue.use(ElementUI)
 axios.defaults.withCredentials = true
 Vue.use(VueQuillEditor)
 // 获取cookie
-function getCookie(name){
-    name = name + "="
-    var start = document.cookie.indexOf(name),
-        value = null;
-    if(start>-1){
-        var end = document.cookie.indexOf(";",start);
-        if(end == -1){
-            end = document.cookie.length;
-        }
-        value = document.cookie.substring(start+name.length,end);
-    }
-    return value;
+function getCookie(name) {
+  var arr,
+    reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+  debugger
+  if (arr = document.cookie.match(reg))
+    return unescape(arr[2]);
+  else
+    return null;
 }
 // 跳转拦截
 router.beforeEach((to, from, next) => {
-  if(getCookie('isAdmin') === 'true'){//如果有cookie就畅通无阻
+  if (getCookie('isAdmin') === 'true') { //如果有cookie就畅通无阻
     next();
-  }else{
-    if(to.path=='/' || to.path=='/detail'){//如果是首页和详情页面就直接next()
+  } else {
+    if (to.path == '/' || to.path == '/detail') { //如果是首页和详情页面就直接next()
       next();
-    }else{//不然就跳转到登录；
+    } else { //不然就跳转到登录；
       console.log('没有cookie:' + getCookie("isAdmin"))
       next('/');
     }
@@ -48,5 +44,7 @@ new Vue({
   el: '#app',
   router,
   template: '<App/>',
-  components: { App }
+  components: {
+    App
+  }
 })
