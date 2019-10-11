@@ -3,7 +3,6 @@ import Router from 'vue-router'
 import Index from '../views/client/index'
 import Index_list from '../views/client/index_list'
 import Datail from '../views/client/detail'
-import Github from '../views/client/github.vue'
 
 import Admin from '../views/admin/admin'
 import Admin_index from '../views/admin/admin_index'
@@ -36,11 +35,7 @@ export default new Router({
           name: 'Datail',
           component: Datail
         },
-        {
-          path: '/github',
-          name: 'Github',
-          component: Github
-        },
+        
       ]
     },
     {

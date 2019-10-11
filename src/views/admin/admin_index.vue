@@ -80,7 +80,7 @@ export default {
         height: 50px;
         line-height: 50px;
         span{
-          color: #4fc08d;
+          color: #3498fe;
         }
       }
     }
@@ -98,7 +98,7 @@ export default {
           border-bottom: 1px solid #f5f5f5;
           text-align: left;
           &.title{
-            color: #4fc08d;
+            color: #3498fe;
           }
           i{
             display: inline-block;

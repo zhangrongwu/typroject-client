@@ -5,7 +5,7 @@
         <router-link to="/"><img src="../assets/logo.png" width="60" height="60" alt=""></router-link>
       </div>
       <div class="right">
-        欢迎来到 vue+express+mongodb 博客
+        欢迎来到 vue+node.js+express+mysql 博客
       </div>
       <div class="github">
         <a href="https://github.com/login/oauth/authorize?client_id=09ac6a02b10dd69a0e7e&scope=user:email

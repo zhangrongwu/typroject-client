@@ -2,7 +2,7 @@
 
 > vue(全家桶)+node(express)+mysql+阿里云(cenOS)部署+域名上线，前后端分离博客
 
-> [http://pengrongjie.com/](http://pengrongjie.com/) （请使用 PC 打开，并不是一个移动端项目）
+> [http://xunigou.vip/](http://xunigou.vip/) （请使用 PC 打开，并不是一个移动端项目）
 
 1. 项目介绍
 2. 开发阶段

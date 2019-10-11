@@ -162,18 +162,20 @@ export default {
         password: this.password,
         password2: this.password2
       }).then((res => {
-        if (res.data.code == 1) {
+        debugger
+        if (res.data.status == 0) {
           this.registerWarnInfo = res.data.message;
           return;
         } else {
-          this.registerWarnInfo = '注册成功，请登录';
+          this.userCookie = res.data.userInfo;
+          // this.registerWarnInfo = '注册成功，请登录';
         }
       }))
     },
     // 退出
     logout() {
       this.$http.get('/users/logout').then((respond) => {
-        if (respond.data.code == 200) {
+        if (respond.data.status == 1) {
           this.userCookie = !this.userCookie;
         }
       })
@@ -217,7 +219,7 @@ export default {
         h1 {
           height: 40px;
           line-height: 40px;
-          border-bottom: 1px solid #4fc08d;
+          border-bottom: 1px solid #3498fe;
         }
         .warnInfo {
           margin: 20px 0;
@@ -250,7 +252,7 @@ export default {
           border: 1px solid #ccc;
           border-radius: 5px;
           text-align: center;
-          background-color: #4fc08d;
+          background-color: #3498fe;
           color: #fff;
           outline: none;
         }

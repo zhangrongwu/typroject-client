@@ -9,7 +9,7 @@
           <span><i class="el-icon-information"></i><i>作者:</i> {{ detailData.author }}</span>
           <span><i class="el-icon-view"></i><i>浏览:</i> {{ detailData.views }}</span>
           <span><i class="el-icon-star-on"></i><i>点赞:</i> {{ detailData.like }}</span>
-          <span><i class="el-icon-message"></i><i>评论:</i> {{ commentLength }}</span>
+          <span><i class="el-icon-message"></i><i>评论:</i> {{ detailData.commentCount }}</span>
           <span><i class="el-icon-time"></i><i>时间:</i> {{ detailData.time }}</span>
         </p>
         <!-- <div class="content">
@@ -32,13 +32,13 @@
         段子手，你还没有登录，请登录后再进行评论
       </div>
       <div class="comments">
-        <h2>当前共有 <span class="number">{{commentLength}}</span> 条评论</h2>
+        <h2>当前共有 <span class="number">{{detailData.commentCount}}</span> 条评论</h2>
         <div class="comment-item" v-for="item in comments">
           <img class="img" src="../../assets/logo.png" alt="">
           <div class="comment-text">
-            <p class="comment-author">{{item.user}}</p>
+            <p class="comment-author">{{item.userName}}</p>
             <p class="comment-time">{{item.time}}</p>
-            <p class="comment-content">{{item.comments}}</p>
+            <p class="comment-content">{{item.comment}}</p>
           </div>
         </div>
       </div>
@@ -59,11 +59,10 @@
 
 <script>
 export default {
-  data(){
-    return{
+  data() {
+    return {
       detailData: '',
       newComment: '',
-      commentLength: '',
       comments: '',
       showLike: false
       // count: '',
@@ -72,15 +71,15 @@ export default {
       // limit: '',
     }
   },
-  props:{
-    userCookie:{
+  props: {
+    userCookie: {
       default: '我是准备接收父类传过来的数据用户cookie，之前的默认数据'
     }
   },
-  methods:{
-    like(obj){
+  methods: {
+    like(obj) {
       this.showLike = !this.showLike;
-      this.$http.post('/index/index_detail_like',{
+      this.$http.post('/index/index_detail_like', {
         like: this.detailData.like,
         _id: obj
       }).then((response) => {
@@ -88,9 +87,9 @@ export default {
         this.detailData = response.data.data;
       })
     },
-    noLike(obj){
+    noLike(obj) {
       this.showLike = !this.showLike;
-      this.$http.post('/index/index_detail_noLike',{
+      this.$http.post('/index/index_detail_noLike', {
         like: this.detailData.like,
         _id: obj
       }).then((response) => {
@@ -98,15 +97,15 @@ export default {
         this.detailData = response.data.data;
       })
     },
-    gotoComment(obj){
-      if(this.newComment == ""){
+    gotoComment(obj) {
+      if (this.newComment == "") {
         this.$message({
           message: '评论不能为空',
           type: 'error'
         });
         return;
       }
-      this.$http.post('/index/index_detail',{
+      this.$http.post('/index/index_detail', {
         newComment: this.newComment,
         _id: obj,
         user: this.userCookie.username
@@ -116,142 +115,146 @@ export default {
           message: '评论成功',
           type: 'success'
         });
-        this.$http.get('/index/index_detail_comment?_id=' + this.$route.query._id).then((response) => {
+        this.$http.get('/index/comments?id=' + this.$route.query.id).then((response) => {
           this.comments = response.data.data;
-          this.commentLength = this.comments.length;
         })
       })
     }
   },
-  created(){
+  created() {
     // this.getData();
-    this.$http.get('/index/index_detail?_id=' + this.$route.query._id).then((response) =>{
+    this.$http.get('/index/article_detail?id=' + this.$route.query.id).then((response) => {
       console.log(response.data);
-      this.detailData = response.data.data;
-      this.comments = response.data.data.comment;
-      this.commentLength = response.data.data.comment.length;
+      // console.log(response.data.data);
+      this.detailData = response.data.data[0];
     });
+
+    this.$http.get('/index/comments?id=' + this.$route.query.id).then((response) => {
+      console.log("----", response);
+      debugger
+      this.comments = response.data.data;
+    })
   }
 }
 </script>
 
 <style lang="less" scoped>
-  .detail{
-    width: 850px;
-    .detail-content{
-      padding: 20px;
-      margin-bottom: 40px;
-      background-color: #fff;
-      h1{
-        height: 40px;
-        line-height: 40px;
-        text-align: center;
-        font-size: 22px;
-      }
-      .info{
-        height: 40px;
-        line-height: 40px;
-        border-bottom: 1px solid #ccc;
-        text-align: center;
-        color: #999;
-        font-size: 14px;
-        span{
-          margin: 0 10px;
-          i{
-            font-style: normal;
-            color: #4fc08d;
-            margin-right: 5px;
-          }
-        }
-      }
-      .content{
-        background-color: red;
-        h1{
-          height: 100px;
-          line-height: 100px;
-        }
-        p{
-          height: 100px;
-          line-height: 100px;
+.detail {
+  width: 850px;
+  .detail-content {
+    padding: 20px;
+    margin-bottom: 40px;
+    background-color: #fff;
+    h1 {
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      font-size: 22px;
+    }
+    .info {
+      height: 40px;
+      line-height: 40px;
+      border-bottom: 1px solid #ccc;
+      text-align: center;
+      color: #999;
+      font-size: 14px;
+      span {
+        margin: 0 10px;
+        i {
+          font-style: normal;
+          color: #3498fe;
+          margin-right: 5px;
         }
       }
     }
-    .comment{
-      padding: 20px;
-      margin-bottom: 40px;
-      background-color: #fff;
-      h2{
-        height: 50px;
-        line-height: 50px;
-        border-bottom: 1px solid #ccc;
-        .number{
-          color: #4fc08d;
+    .content {
+      background-color: red;
+      h1 {
+        height: 100px;
+        line-height: 100px;
+      }
+      p {
+        height: 100px;
+        line-height: 100px;
+      }
+    }
+  }
+  .comment {
+    padding: 20px;
+    margin-bottom: 40px;
+    background-color: #fff;
+    h2 {
+      height: 50px;
+      line-height: 50px;
+      border-bottom: 1px solid #ccc;
+      .number {
+        color: #3498fe;
+      }
+    }
+    .comment-noLogined {
+      height: 80px;
+      line-height: 80px;
+      text-align: center;
+      color: #3498fe;
+      font-weight: bold;
+    }
+    .comment-isLogined {
+      height: 220px;
+      border-bottom: 1px solid #ccc;
+      textarea {
+        height: 120px;
+        width: 790px;
+        margin: 10px 0;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        outline: none;
+        &:focus {
+          border-color: #66afe9;
+          box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
         }
       }
-      .comment-noLogined{
-        height: 80px;
-        line-height: 80px;
-        text-align: center;
-        color: #4fc08d;
-        font-weight: bold;
+      button {
+        float: right;
+        &.like {
+          margin-right: 20px;
+          background-color: #fff;
+          color: #3498fe;
+          &:hover {
+            background-color: #3498fe;
+            color: #fff;
+          }
+        }
       }
-      .comment-isLogined{
-        height: 220px;
-        border-bottom: 1px solid #ccc;
-        textarea{
-          height: 120px;
-          width: 790px;
+    }
+    .comment-item {
+      display: flex;
+      border-bottom: 1px solid #f1f1f1;
+      .img {
+        flex: 0 0 40px;
+        width: 40px;
+        height: 40px;
+        margin: 10px;
+        border-radius: 50%;
+        border-radius: 1px solid #3498fe;
+      }
+      .comment-text {
+        flex: 1;
+        margin-top: 10px;
+        .comment-author {
+          margin-right: 10px;
+          font-size: 14px;
+          color: #3498fe;
+        }
+        .comment-time {
+          font-size: 14px;
+          color: #999;
+        }
+        .comment-content {
           margin: 10px 0;
-          padding: 10px;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          outline: none;
-          &:focus{
-            border-color: #66afe9;
-            box-shadow:  0 0 8px rgba(102, 175, 233, .6);
-          }
-        }
-        button{
-          float: right;
-          &.like{
-            margin-right: 20px;
-            background-color: #fff;
-            color: #4fc08d;
-            &:hover{
-              background-color: #4fc08d;
-              color: #fff;
-            }
-          }
-        }
-      }
-      .comment-item{
-        display: flex;
-        border-bottom: 1px solid #f1f1f1;
-        .img{
-          flex: 0 0 40px;
-          width: 40px;
-          height: 40px;
-          margin: 10px;
-          border-radius: 50%;
-          border-radius: 1px solid #4fc08d;
-        }
-        .comment-text{
-          flex: 1;
-          margin-top: 10px;
-          .comment-author{
-            margin-right: 10px;
-            font-size: 14px;
-            color: #4fc08d;
-          }
-          .comment-time{
-            font-size: 14px;
-            color: #999;
-          }
-          .comment-content{
-            margin: 10px 0;
-          }
         }
       }
     }
   }
+}
 </style>
