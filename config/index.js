@@ -34,7 +34,7 @@ module.exports = {
       },
       // 后台
       '/admin/*': {
-        target: 'http://localhost:80'
+        target: 'http://localhost:3001'
       },
       // 前台
       '/index/*': {

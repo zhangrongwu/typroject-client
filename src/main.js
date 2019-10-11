@@ -18,7 +18,6 @@ Vue.use(VueQuillEditor)
 function getCookie(name) {
   var arr,
     reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-  debugger
   if (arr = document.cookie.match(reg))
     return unescape(arr[2]);
   else

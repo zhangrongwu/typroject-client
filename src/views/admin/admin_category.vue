@@ -10,7 +10,7 @@
       <table>
         <tr>
           <th>序号</th>
-          <th>_id</th>
+          <th>id</th>
           <th>分类名</th>
           <th>时间</th>
           <th>操作</th>
@@ -18,11 +18,11 @@
         </tr>
         <tr v-for="(item,index) in category">
           <td>{{ index}}</td>
-          <td>{{ item._id }}</td>
+          <td>{{ item.id }}</td>
           <td>{{ item.title }}</td>
           <td>{{ item.time }}</td>
-          <td><router-link :to="{ path: '/admin_category_update', query: {_id: item._id} }"><button type="button" class="updateButton">修改</button></router-link></td>
-          <td @click="del(item._id)"><button type="button" class="delButton">删除</button></td>
+          <td><router-link :to="{ path: '/admin_category_update', query: {id: item.id} }"><button type="button" class="updateButton">修改</button></router-link></td>
+          <td @click="del(item.id)"><button type="button" class="delButton">删除</button></td>
         </tr>
       </table>
     </div>
@@ -57,7 +57,7 @@ export default {
   },
   methods:{
     getData(){
-      this.$http.get('/admin/admin_category').then((response) => {
+      this.$http.get('/admin/category').then((response) => {
         console.log(response.data);
         this.category = response.data.data;
         this.count = response.data.count;

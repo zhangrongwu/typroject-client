@@ -12,21 +12,23 @@
       <table>
         <tr>
           <th>序号</th>
-          <th>_id</th>
+          <th>id</th>
           <th>username</th>
           <th>password</th>
           <th>isAdmin</th>
-          <th>time</th>
+          <th>email</th>
+          <th>登录方式</th>
           <th>操作</th>
         </tr>
         <tr v-for="(item,index) in users">
           <td>{{ index + 1 }}</td>
-          <td>{{ item._id }}</td>
-          <td>{{ item.username }}</td>
+          <td>{{ item.id }}</td>
+          <td>{{ item.userName }}</td>
           <td>{{ item.password }}</td>
           <td v-if="item.isAdmin == true">是</td>
           <td v-else>否</td>
-          <td>{{ item.time }}</td>
+          <td>{{ item.email }}</td>
+          <td>{{ item.type }}</td>
           <td @click="del(item._id)"><button v-show="item.isAdmin == false" type="button" class="delButton">删除</button></td>
         </tr>
       </table>
@@ -47,9 +49,9 @@
 <script>
 import navBread from '../../components/navBread'
 export default {
-  data(){
-    return{
-      users:'',
+  data() {
+    return {
+      users: '',
       count: '',
       pages: '',
       page: '',
@@ -57,13 +59,13 @@ export default {
       skip: ''
     }
   },
-  components:{
+  components: {
     navBread
   },
-  methods:{
-    getData(){
-      this.$http.get('/admin/admin_users').then((response) => {
-        if(response.data.code == 200){
+  methods: {
+    getData() {
+      this.$http.get('/admin/users').then((response) => {
+        if (response.data.status == 1) {
           console.log(response.data);
           this.users = response.data.data;
           this.count = response.data.count;
@@ -74,32 +76,32 @@ export default {
         }
       })
     },
-    del(obj){
-        this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
+    del(obj) {
+      this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        var that = this;
+        this.$http.post('/admin/admin_users_del', {
+          _id: obj
         }).then(() => {
-          var that = this;
-          this.$http.post('/admin/admin_users_del',{
-            _id: obj
-          }).then(() => {
-            this.$message({
-              type: 'success',
-              message: '删除一个用户成功!'
-            });
-            this.getData();
-          })
-        }).catch(() => {
           this.$message({
-            type: 'info',
-            message: '已取消删除'
+            type: 'success',
+            message: '删除一个用户成功!'
           });
+          this.getData();
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
         });
+      });
     },
-    next(obj){
+    next(obj) {
       this.page++;
-      if(this.page > this.pages){
+      if (this.page > this.pages) {
         this.page = this.pages;
         this.$message({
           message: '已经是最后一页',
@@ -112,9 +114,9 @@ export default {
         this.users = response.data.data;
       })
     },
-    prev(){
+    prev() {
       this.page--;
-      if(this.page < 1){
+      if (this.page < 1) {
         this.page = 1;
         this.$message({
           message: '已经是第一页',
@@ -131,23 +133,23 @@ export default {
       })
     }
   },
-  created(){
+  created() {
     this.getData();
   }
 }
 </script>
 
 <style lang="less" scoped>
-.admin_users{
-  .table-box{
-    .table-top{
+.admin_users {
+  .table-box {
+    .table-top {
       height: 80px;
-      h1{
+      h1 {
         float: left;
         margin-left: 20px;
         line-height: 80px;
       }
-      button{
+      button {
         float: left;
         height: 35px;
         line-height: 35px;
@@ -157,5 +159,4 @@ export default {
     }
   }
 }
-
 </style>

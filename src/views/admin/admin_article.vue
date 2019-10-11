@@ -10,7 +10,7 @@
       <table>
         <tr>
           <th>序号</th>
-          <th>_id</th>
+          <th>id</th>
           <th>文章名称</th>
           <th>文章分类</th>
           <!-- <th>文章内容</th> -->
@@ -24,7 +24,7 @@
         </tr>
         <tr v-for="(item,index) in articleData">
           <td>{{ index}}</td>
-          <td>{{ item._id }}</td>
+          <td>{{ item.id }}</td>
           <td>{{ item.title }}</td>
           <td>{{ item.category }}</td>
           <!-- <td>{{ item.content }}</td> -->
