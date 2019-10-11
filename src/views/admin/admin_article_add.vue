@@ -33,34 +33,35 @@
 <script>
 import navBread from '../../components/navBread'
 export default {
-  data(){
-    return{
+  data() {
+    return {
       articleName: '',
       articleCategory: '',
       articleContent: '',
-      categoryData:'',
+      categoryData: '',
       editorOption: {},
     }
   },
-  components:{
+  components: {
     navBread
   },
-  methods:{
-    addArticle(){
+  methods: {
+    addArticle() {
       var that = this;
-      this.$http.post('/admin/article_add',{
-        articleName: this.articleName,
-        articleCategory: this.articleCategory,
-        articleContent: this.articleContent
+      this.$http.post('/index/article_add', {
+        title: this.articleName,
+        category: this.articleCategory,
+        author: "佚名",
+        content: this.articleContent
       }).then((response) => {
         console.log(response.data);
         this.$message({
           message: '增加成功，1秒后跳转',
           type: 'success'
         });
-        setTimeout(function(){
-          that.$router.push({path: '/admin_article'});
-        },1000)
+        setTimeout(function () {
+          that.$router.push({ path: '/admin_article' });
+        }, 1000)
       })
     },
     onEditorBlur(editor) {
@@ -73,8 +74,8 @@ export default {
       this.content = html
     }
   },
-  created(){
-    this.$http.get('/index/index_category').then((response) => {
+  created() {
+    this.$http.get('/admin/category').then((response) => {
       console.log(response.data);
       this.categoryData = response.data.data;
       console.log(this.categoryData);
@@ -84,16 +85,16 @@ export default {
 </script>
 
 <style lang="less" scoped>
-h1{
+h1 {
   margin-left: 120px;
 }
-button{
+button {
   margin-top: 70px;
 }
-.edit{
+.edit {
   margin: 0 40px;
 }
-.articleContent{
+.articleContent {
   height: 250px;
 }
 </style>

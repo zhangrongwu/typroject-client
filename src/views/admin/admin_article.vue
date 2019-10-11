@@ -32,7 +32,7 @@
           <td>{{ item.views }}</td>
           <!-- <td>{{ item.comment.length }}</td> -->
           <td>{{ item.time }}</td>
-          <td><router-link :to="{ path: '/admin_article_comment', query: {_id: item._id} }"><button class="commentButton">查看 ({{ item.comment.length }})</button></router-link></td>
+          <td><router-link :to="{ path: '/admin_article_comment', query: {_id: item._id} }"><button class="commentButton">查看 ({{ item.commentCount }})</button></router-link></td>
           <td><router-link :to="{ path: '/admin_article_update', query: {_id: item._id} }"><button type="button" class="updateButton">修改</button></router-link></td>
           <td @click="del(item.id)"><button type="button" class="delButton">删除</button></td>
         </tr>
@@ -68,7 +68,7 @@ export default {
   },
   methods: {
     getData() {
-      this.$http.get('/admin/admin_article').then((response) => {
+      this.$http.get('/index/article').then((response) => {
         console.log(response.data);
         this.articleData = response.data.data;
         this.count = response.data.count;
