@@ -11,7 +11,7 @@
       </ul>
     </section>
     <!-- 文章简介 -->
-    <div class="left-item" v-for="item in articleData">
+    <div class="left-item" v-for="(item,  index) in articleData" :key="index">
       <router-link :to="{path: '/detail', query: {id: item.id }}">
         <h1>{{ item.title }}</h1>
         <p class="info">
@@ -22,7 +22,7 @@
           <span><i class="el-icon-message"></i><i>评论:</i> {{ item.commentCount }}</span>
           <span><i class="el-icon-time"></i><i>时间:</i> {{ item.time }}</span>
         </p>
-        <p class="desc" v-html="item.content"></p>
+        <p class="desc" v-html="contentInfo(item.content)"></p>
         <button type="button">阅读更多</button>
       </router-link>
     </div>
@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import showdown from 'showdown'
 
 export default {
   data() {
@@ -56,6 +57,11 @@ export default {
     }
   },
   methods: {
+    contentInfo(obj) {
+      console.log("---- ---------", obj)
+      var converter = new showdown.Converter();
+      return converter.makeHtml(obj)
+    },
     // 选择所有分类
     selectAllData() {
       this.$http.get('/index/article').then((response) => {
@@ -109,6 +115,7 @@ export default {
       })
     }
   },
+
   created() {
     this.$http.get('/index/article').then((response) => {
       console.log(response.data);
@@ -118,13 +125,13 @@ export default {
       this.pages = response.data.pages;
       this.limit = response.data.limit;
     });
-    this.$http.get('/index/article_category').then((response) => {
-      console.log(response.data);
-    })
-    this.$http.get('/index/index_category').then((response) => {
-      console.log(response.data);
-      this.categoryData = response.data.data;
-    })
+    // this.$http.get('/index/article_category').then((response) => {
+    //   console.log(response.data);
+    // })
+    // this.$http.get('/index/index_category').then((response) => {
+    //   console.log(response.data);
+    //   this.categoryData = response.data.data;
+    // })
   }
 }
 </script>

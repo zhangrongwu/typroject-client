@@ -92,16 +92,25 @@ export default {
     navFooter
   },
   created() {
-
     if (this.$route.query.code != null) {
       this.githubLogin(this.$route.query.code);
     }
+    this.userCookie = this.getCookie("userInfo");
+    console.log("userCookie", this.userCookie)
   },
   methods: {
     // 登陆注册显示隐藏
     toggleRegisterLogin() {
       this.Login = !this.Login;
       this.Register = !this.Register;
+    },
+    getCookie(name) {
+      var arr,
+        reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+      if (arr = document.cookie.match(reg))
+        return unescape(arr[2]);
+      else
+        return null;
     },
     githubLogin(code) {
 

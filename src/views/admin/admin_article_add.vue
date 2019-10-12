@@ -16,8 +16,13 @@
     <div class="form-group">
       <p>文章内容</p>
       <!-- <textarea v-model="articleContent"></textarea> -->
+      <div class="form-group-radio">
+      <el-radio v-model="article_type" label="1">富文本编辑器</el-radio>
+      <el-radio v-model="article_type" label="2">MarkDown编辑器</el-radio>
+      </div>
     </div>
-    <div class="edit">
+    <div>
+    <div class="edit" v-show="article_type == '1'">
       <quill-editor class="articleContent" v-model="articleContent"
                     ref="myQuillEditor"
                     :options="editorOption"
@@ -25,14 +30,20 @@
                     @focus="onEditorFocus($event)"
                     @ready="onEditorReady($event)">
       </quill-editor>
-      <button type="button" @click='addArticle'>添加</button>
     </div>
+    <div id="edit-two" v-show="article_type == '2'">
+        <mavon-editor style="height: 100%" v-model="markdownMessage"></mavon-editor>
+      </div>
+    </div>
+    <button class="add-finish" type="button" @click='addArticle'>添加</button>
   </div>
 </template>
 
 <script>
 import navBread from '../../components/navBread'
+import showdown from 'showdown'
 export default {
+
   data() {
     return {
       articleName: '',
@@ -40,6 +51,8 @@ export default {
       articleContent: '',
       categoryData: '',
       editorOption: {},
+      article_type: '1',
+      markdownMessage: ""
     }
   },
   components: {
@@ -47,12 +60,14 @@ export default {
   },
   methods: {
     addArticle() {
+      var converter = new showdown.Converter();
+
       var that = this;
       this.$http.post('/index/article_add', {
         title: this.articleName,
         category: this.articleCategory,
         author: "佚名",
-        content: this.articleContent
+        content: this.article_type == "1" ? this.articleContent : this.markdownMessage
       }).then((response) => {
         console.log(response.data);
         this.$message({
@@ -72,13 +87,11 @@ export default {
     },
     onEditorChange({ editor, html, text }) {
       this.content = html
-    }
+    },
   },
   created() {
     this.$http.get('/admin/category').then((response) => {
-      console.log(response.data);
       this.categoryData = response.data.data;
-      console.log(this.categoryData);
     })
   }
 }
@@ -88,13 +101,29 @@ export default {
 h1 {
   margin-left: 120px;
 }
-button {
-  margin-top: 70px;
+.add-finish {
+  margin-left: 40px;
+  margin-top: 120px;
 }
 .edit {
   margin: 0 40px;
 }
 .articleContent {
   height: 250px;
+}
+.form-group-radio {
+  margin-top: 8px;
+  margin-left: 20px;
+}
+.edit-two {
+  display: flex;
+  margin: 0 40px;
+  .edit-two-input {
+    width: 50%;
+  }
+  .edit-two-output {
+    margin-left: 10px;
+    width: 50%;
+  }
 }
 </style>

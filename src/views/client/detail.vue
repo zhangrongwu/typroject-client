@@ -15,7 +15,8 @@
         <!-- <div class="content">
           {{ detailData.content }}
         </div> -->
-        <div class="detailContent"  v-html="detailData.content">
+        <!-- <div class="detailContent"  v-html="detailData.content"> -->
+                  <div v-html="contentInfo" class="detailContent" >
 
         </div>
       </div>
@@ -58,7 +59,15 @@
 </template>
 
 <script>
+import showdown from 'showdown'
+
 export default {
+  computed: {
+    contentInfo() {
+      var converter = new showdown.Converter();
+      return converter.makeHtml(this.detailData.content)
+    }
+  },
   data() {
     return {
       detailData: '',
@@ -91,7 +100,7 @@ export default {
       this.showLike = !this.showLike;
       this.$http.post('/index/index_detail_noLike', {
         like: this.detailData.like,
-        _id: obj
+        id: obj
       }).then((response) => {
         console.log(response.data);
         this.detailData = response.data.data;
@@ -105,19 +114,24 @@ export default {
         });
         return;
       }
-      this.$http.post('/index/index_detail', {
-        newComment: this.newComment,
-        _id: obj,
-        user: this.userCookie.username
+      debugger
+      this.$http.post('/index/comments_add', {
+        comment: this.newComment,
+        articleId: this.$route.query.id,
+        userName: this.userCookie.userName,
+        userId: "10000",
+        time: JSON.stringify(new Date()),
       }).then((response) => {
-        console.log(response.data);
-        this.$message({
-          message: '评论成功',
-          type: 'success'
-        });
-        this.$http.get('/index/comments?id=' + this.$route.query.id).then((response) => {
-          this.comments = response.data.data;
-        })
+        if (response.data.status == 1) {
+          console.log(response.data);
+          this.$message({
+            message: '评论成功',
+            type: 'success'
+          });
+          this.$http.get('/index/comments?id=' + this.$route.query.id).then((response) => {
+            this.comments = response.data.data;
+          })
+        }
       })
     }
   },
@@ -130,8 +144,6 @@ export default {
     });
 
     this.$http.get('/index/comments?id=' + this.$route.query.id).then((response) => {
-      console.log("----", response);
-      debugger
       this.comments = response.data.data;
     })
   }

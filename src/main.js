@@ -9,6 +9,10 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 import VueQuillEditor from 'vue-quill-editor'
 
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+Vue.use(mavonEditor)
+
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
 Vue.use(ElementUI)
