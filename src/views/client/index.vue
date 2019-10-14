@@ -96,6 +96,7 @@ export default {
       this.githubLogin(this.$route.query.code);
     }
     this.userCookie = this.getCookie("userInfo");
+
     console.log("userCookie", this.userCookie)
   },
   methods: {

@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="navFooter">
     <div class="container">
-      Copyright © 2017 个人网站 All Rights Reserved 粤ICP备17128307号-1
+      Copyright © 2019 个人网站 All Rights Reserved 京ICP备19003354号-2
     </div>
   </div>
 </template>

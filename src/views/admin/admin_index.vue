@@ -17,7 +17,7 @@
       <div class="admin_index_item">
         <img src="../../assets/mongo-db.png" alt="">
         <p class="text">
-          <span>数据库:</span> mongodb + mongoose
+          <span>数据库:</span> mysql
         </p>
       </div>
     </section>

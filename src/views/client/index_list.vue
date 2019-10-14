@@ -4,7 +4,7 @@
     <section class="category-item">
       <ul>
         <li @click="activeChecked = 'all'"  :class="{'actived': activeChecked == 'all'}" >
-          <p  @click="selectAllData">All</p></li>
+          <p  @click="selectAllData">全部</p></li>
         <li @click="activeChecked = index" :class="{'actived':activeChecked == index }"  v-for="(item,index) in categoryData">
             <span @click="selectData(index,item)">{{item.title}}</span>
         </li>
@@ -58,14 +58,12 @@ export default {
   },
   methods: {
     contentInfo(obj) {
-      console.log("---- ---------", obj)
       var converter = new showdown.Converter();
       return converter.makeHtml(obj)
     },
     // 选择所有分类
     selectAllData() {
       this.$http.get('/index/article').then((response) => {
-        console.log(response.data);
         this.articleData = response.data.data;
         this.count = response.data.count;
         this.page = response.data.page;
@@ -77,7 +75,6 @@ export default {
     selectData(index, item) {
       var category = item.title;
       this.$http.get('/index/article_category?category=' + category).then((response) => {
-        console.log(response.data);
         this.articleData = response.data.data;
         this.count = response.data.count;
         this.page = response.data.page;
@@ -96,7 +93,6 @@ export default {
         return;
       }
       this.$http.get('/index/article?page=' + this.page).then((response) => {
-        console.log(response.data);
         this.articleData = response.data.data;
       })
     },
@@ -125,13 +121,11 @@ export default {
       this.pages = response.data.pages;
       this.limit = response.data.limit;
     });
-    // this.$http.get('/index/article_category').then((response) => {
-    //   console.log(response.data);
-    // })
-    // this.$http.get('/index/index_category').then((response) => {
-    //   console.log(response.data);
-    //   this.categoryData = response.data.data;
-    // })
+
+    this.$http.get('/admin/category').then((response) => {
+      console.log(response.data);
+      this.categoryData = response.data.data;
+    })
   }
 }
 </script>

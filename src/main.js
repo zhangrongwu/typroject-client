@@ -27,6 +27,7 @@ function getCookie(name) {
   else
     return null;
 }
+
 // 跳转拦截
 router.beforeEach((to, from, next) => {
   if (getCookie('isAdmin') === 'true') { //如果有cookie就畅通无阻
